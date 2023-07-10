@@ -39,10 +39,11 @@ export function normalizeSpacerunSpans(htmlDocument) {
         const htmlElement = el;
          // Use `el.childNodes[ 0 ].data.length` instead of `el.innerText.length`. For `el.innerText.length` which
 		// contains spaces mixed with `&nbsp;` Edge browser returns incorrect length.
-		if (el.childNodes && el.childNodes[0] && el.childNodes[0].data) {
-			const innerTextLength = el.childNodes[0].data.length;
-			el.innerHTML = Array(innerTextLength + 1).join('\u00A0 ').substr(0, innerTextLength);
-		}
+        if (/[^\b]/.test(htmlElement.innerText.trim()) === false) {
+            const innerTextLength = htmlElement.innerText.length || 0;
+
+            htmlElement.innerText = Array(innerTextLength + 1).join('\u00A0 ').substr(0, innerTextLength);
+        }
         // const innerTextLength = htmlElement.innerText.length || 0;
         // htmlElement.innerText = Array(innerTextLength + 1).join('\u00A0 ').substr(0, innerTextLength);
     });
